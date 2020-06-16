@@ -13,8 +13,6 @@ color: white;
     --mainBleu : #2bb0e1;
 }
 
-
-
 body {
 
     font-family:  'Ubuntu', sans-serif;
@@ -212,4 +210,74 @@ ul {
 .visible {
 
  visibility: hidden;;
+}
+
+.profil {
+
+    border: 2px solid var(--mainBleu);
+    border-radius: 5px;
+    min-height: 80vh;
+    margin-top: 47px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.bg-cover {
+
+    clip-path: polygon(100% 0, 0 0, 0 50%);
+    height: 300px;
+    width: 100%;
+    background: rgb(245,245,245);
+    background: linear-gradient(180deg, rgba(245,245,245,1) 0%, rgba(43,176,225,1) 100%); 
+}
+
+.profilPhoto {
+ height: 130px;
+ width:  130px;
+ border: var(--mainBleu) 1px solid;
+ border-radius: 50%;
+ align-self: center;
+ margin-top: -270px;
+ z-index: 2;
+}
+
+.profil-titre {
+ 
+ align-self: center;
+ display: flex;
+ width: 60%;
+ justify-content: center;
+
+}
+
+.profil-titre h5 {
+
+    text-align: center;
+    margin-right: 10px;
+  
+}
+
+.profil-position {
+
+    text-align: center;
+}
+
+.profil-position h7 {
+
+    color: var(--mainBleu);
+}
+
+
+#noteStyle {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--mainBleu);
+}
+
+.nom:hover {
+
+    cursor: pointer;
+    color: var(--mainBleu);
+    
 }
