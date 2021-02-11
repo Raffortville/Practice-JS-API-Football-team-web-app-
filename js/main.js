@@ -1,156 +1,150 @@
-let table = { sortKey: null, playerPosActiv: "all"};
+let table = { sortKey: "position", playerPosActiv: "all"};
 let statPlay = [];
+let joueurs = [];
+let joueursByPos = [];
 let descending = true;
-let list = document.getElementById('list');
+
+const list = document.getElementById('list');
 const boutons = document.querySelectorAll('tr th');
-let boutonsPos = document.querySelectorAll('[data-pos]');
+const boutonsPos = document.querySelectorAll('[data-pos]');
+const listTab = document.querySelectorAll('tr th');
+const colStat = document.querySelector(".hidden");
+
 const url = "https://api.football-data.org/v2/teams/516/";
-
-////*************************************   APPEL FETCH API FOOTBALL ****************************/
-  fetch(url, {
-
+const options = {
   method: "GET",
   headers: { "X-Auth-Token": "4e1bcfc7c6a14469ab579521b2b6c912"}
-})
-  .then(resp => resp.json())
-  .then(function(data) {players = data.squad
-  players.pop()
-  handleTable();
-  showPlayers(players)
- 
+};
 
-})
-  .catch(function(error) {console.log(error);
-});
+////*************************************   APPEL FETCH API FOOTBALL ****************************/
 
-////************************************* CONCATENATION DU TAB DES STATS DANS LE TAB PLAYERS ET AFFICHAGE
+const fetchApi = async () => {
 
-const showPlayers = (tablo) =>{
+  const response = await fetch(url,options)
+
+  const data =  await response.json()
+
+  data.squad.map(player=>{ 
+    
+    statPlay.map(statp=> {
+
+      if(statp.nom === player.name){
+          
+        player.matchs = statp.matchs;
+        player.shirtNumber = statp.num;
+        player.buts = statp.buts;
+        player.decis = statp.decis; 
+        player.TirC = statp.TirC;
+        player.duel = statp.duel;
+        player.int = statp.int;
+        player.hdm = statp.hdm;
+        player.note = statp.note;
+        player.photo = statp.photo;
+        player.notemoy = statp.resultNoteMoy.toFixed(1);
+
+        joueurs = [...joueurs,player]
+      }
+    })
+  })
+
+  sortTable(joueurs)
+} 
+
+const displayJoueurs = (array) => {
 
   list.innerText = ""
 
-  tablo.forEach(player=>{ statPlay.forEach(statp=> {
+  array.forEach(player => {
 
-    if(statp.nom === player.name){
-       
-      player.matchs = statp.matchs;
-      player.shirtNumber = statp.num;
-      player.buts = statp.buts;
-      player.decis = statp.decis;
-      player.TirC = statp.TirC;
-      player.duel = statp.duel;
-      player.int = statp.int;
-      player.hdm = statp.hdm;
-      player.note = statp.note;
-      player.photo = statp.photo;
-      player.notemoy = statp.resultNoteMoy.toFixed(1);
-
-      list.insertAdjacentHTML('beforeend',`<tr data-nom ="${player.name}">
-      <td id="listnum"><span class ="ecus">${player.shirtNumber}</span><span class="nom">${player.name}</span></td>
-      <td data-position ="${player.position}" >${player.position}</td><td >${player.matchs}</td><td >${player.buts}</td><td >${player.decis}</td>
-      <td >${player.TirC}</td><td>${player.duel}</td><td >${player.int}</td><td>${player.hdm}</td>
-      <td >${player.notemoy}</td>
-      </tr>`)
-    } 
-    })
- })
- setUpDataChart();
+    list.insertAdjacentHTML('beforeend',`
+    <tr>
+      <th scope="row"><span class ="ecus">${player.shirtNumber}</span></th>
+      <td><span class="nom" data-nom ="${player.name}">${player.name}</span></td>
+      <td data-position = "${player.position}">${player.position}</td>
+      <td>${player.matchs}</td>
+      <td>${player.buts}</td>
+      <td>${player.decis}</td>
+      <td>${player.TirC}</td>
+      <td>${player.duel}</td>
+      <td>${player.int}</td>
+      <td>${player.hdm}</td>
+      <td>${player.notemoy}</td>
+    </tr>`)
+  })
+  setUpDataChart();
 }
 
-const handleTable = () => {
 
-    boutonsPos.forEach(bout=> { bout.addEventListener('click', (e) => {boutonsPos.forEach(bout => { 
-    
-      bout.classList.remove("activ");})
-    
-      bout.classList.add("activ");
-    
+
+const handleEventsPos = () => {
+
+  toggleActivClass(boutonsPos,"activ");
+
+  boutonsPos.forEach(bout=> { 
+
+    bout.addEventListener('click', () => {
+
       table.playerPosActiv = bout.dataset.pos;
-      
-      setUpTable();
+
+      filterByPos(joueurs);
     })
-    })
-
-  boutons.forEach(bout=> { bout.addEventListener('click',(e) => { table.sortKey = bout.dataset.value;
-
-    setUpTable();
-
-  })})
+  })
 
 }
 
-const setUpTable = () => {
+const toggleActivClass = (nodeElmt,classStyle) => {
 
-  if(table.playerPosActiv === "all" && table.sortKey == null){
+  nodeElmt.forEach(elmt => {
 
-    showPlayers(players)
-  
+    elmt.addEventListener('click',() => {
 
-  } else if(table.playerPosActiv === "all" && table.sortKey){
+      nodeElmt.forEach(elmt => elmt.classList.remove(classStyle))
 
-    sortTable(players);
+      elmt.classList.add(classStyle)
+    })
+  })
+}
+
+
+const handleEventsSort = () => {
+
+  boutons.forEach(bout=> { 
+    
+    bout.addEventListener('click',() => { 
+
+    table.sortKey = bout.dataset.value;
+
+    table.playerPosActiv === "all" ?  sortTable(joueurs) : sortTable(joueursByPos)
+
+  })
+  })
+}
+
+const filterByPos = (array) => {
+
+  if(table.playerPosActiv === "all"){
+
+    joueursByPos = [...joueurs]
+
+  }  else {
+
+    joueursByPos = array.filter(player => player.position === table.playerPosActiv)
+  }
  
-  
-  }else if(table.playerPosActiv !== "all" && table.sortKey == null){
-
-    let arrayByPos = players.filter(player => { return player.position == table.playerPosActiv})
-    showPlayers(arrayByPos);
-   
-  }else if(table.playerPosActiv !== "all" && table.sortKey){
-
-    let arrayByPos = players.filter(player => { return player.position == table.playerPosActiv})
-    sortTable(arrayByPos)
-
-  } else {return;}
+  sortTable(joueursByPos)
 }
-
 
 
 const sortTable = (array) => {
 
-  if(table.sortKey == "shirtNumber" || table.sortKey == "name" ) {changeOrderByStr(array);
-       
-  } else if(table.sortKey == "position") { showPlayers(array);setUpDataChart();
+  let arrayDefault =  descending ? [...array].sort((a,b) => a[table.sortKey] > b[table.sortKey]) : [...array].sort((a,b) => a[table.sortKey] < b[table.sortKey])
     
-  } else {changeOrderNumber(array)}
+  descending ?  descending = false : descending = true;
+
+  displayJoueurs(arrayDefault)
+  
 }
   
-  const changeOrderByStr = array => {
-  
-    if(descending == true ){
-      
-      playersSortedString = [...array].sort((a, b) => b[table.sortKey] > a[table.sortKey] ? 1 : -1);
-      showPlayers(playersSortedString)
-    
-      descending = false;
-      
-    } else {
-  
-      playersSortedString = [...array].sort((a, b) => a[table.sortKey] > b[table.sortKey] ? 1 : -1);
-      showPlayers(playersSortedString);
-  
-      descending = true;
-    }
-  }
-  
-  const changeOrderNumber = (array) => {
-  
-    if(descending == true){
-  
-      const playersSortedNumber = [...array].sort((a,b) => b[table.sortKey] - a[table.sortKey]);
-      showPlayers(playersSortedNumber);
-    
-      descending = false;
-      
-    } else {
-  
-      const playersSortedNumber = [...array].sort((a,b) => a[table.sortKey] - b[table.sortKey]);
-      showPlayers(playersSortedNumber);
-   
-      descending = true;
-    }
-  }
-
 function Statitistks(nom,matchs,buts,decis,TirC,duel,int,hdm,note,num,photo){
 
   this.nom = nom;
@@ -212,13 +206,21 @@ let arrayNbMatchs = [];
 let arrayNotes = [];
 let noteJoueur;
 
-for(let i = 1; i < 13; i++){ arrayNbMatchs.push("match " + i )}
+for(let i = 1; i < 13; i++){ arrayNbMatchs.push("match " + i )} 
 
 const setUpDataChart =  () => {
 
- const boutonNoms = document.querySelectorAll(".nom");
- console.log(players)
- boutonNoms.forEach(bout=> { bout.addEventListener('click',(e) => {showStatPlayer(e)})})
+  const boutonNoms = document.querySelectorAll(".nom");
+
+    boutonNoms.forEach(bout=> { 
+      
+      bout.addEventListener('click',(e) => { 
+      
+        colStat.classList.remove('hidden')
+
+        showStatPlayer(e)
+      })
+  })
 }
 
 const showStatPlayer = (e) => {
@@ -229,7 +231,7 @@ const showStatPlayer = (e) => {
   const profilPhoto = document.querySelector('.profilPhoto')
 
 
-  players.forEach(player => { 
+  joueurs.forEach(player => { 
 
     if(player.name === e.target.innerText){
 
@@ -283,16 +285,25 @@ const myChart = new Chart(ctx, {
 
 //////////////////// animation on Hover///////////////////////////////
 
-(function animationIcon(){ const listTab = document.querySelectorAll('tr th');
+(function animationIcon(){ 
 
-  listTab.forEach(lis=>{ lis.addEventListener('mouseover', function(event){
+  toggleActivClass(listTab,'activStat')
+  
+  listTab.forEach(lis=> { 
 
-  lis.childNodes[1].lastChild.classList.add('rotate')})
+    lis.addEventListener('mouseover', () => lis.firstElementChild.classList.add('rotate'));
 
-  lis.addEventListener('mouseleave', function(event){ 
+    lis.addEventListener('mouseleave',  () => lis.firstElementChild.classList.remove('rotate'));
+  })
 
-  lis.childNodes[1].lastChild.classList.remove('rotate')})
-})
 })();
 
+window.addEventListener('load',(e) => init());
 
+const init = () => {
+
+  fetchApi();
+  handleEventsPos();
+  handleEventsSort();
+
+}

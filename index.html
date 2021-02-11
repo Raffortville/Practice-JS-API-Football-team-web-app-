@@ -14,57 +14,52 @@
 
   <div class="container-fluid">
     <div class="row">           
-        <div class="col-md-2 menu">
-            <div class="logo">
-                <img src="img/logo.svg " alt="">
-            </div>
-            <ul class="menu-list">
-                <li data-pos ="Goalkeeper"class="nav-links">GARDIENS</li>
-                <li data-pos="Defender" class="nav-links">DEFENSEURS</li>
-                <li data-pos="Midfielder" class="nav-links">MILIEUX</li>
-                <li data-pos="Attacker"class="nav-links" >ATTAQUANTS</li>
-                <li data-pos ="all" class="nav-links activ" >TOUS</li>
-            </ul>
-        </div>
-        <div class="col-md-4 tablo">
-          <div class="scroll">
-            <table id="tab">
-                <thead class=" navbar navbar-expand-md position-absolute ">
-                  <tr>
-                    <th  data-value = "shirtNumber" scope="col">Num<span><i class="fas fa-angle-down"></span></i></th>
-                    <th data-value = "name"scope="col">Noms<span><i class="fas fa-angle-down"></span></i></th>
-                    <th class ="activStat" data-value = "position" scope="col">Positions<span><i class="fas fa-angle-down"></span></i></th>
-                    <th data-value = "matchs" scope="col">Mj<span><i class="fas fa-angle-down"></span></i></th>
-                    <th data-value = "buts" scope="col">But<span><i class="fas fa-angle-down"></span></i></th>  
-                    <th data-value = "decis" scope="col">Déc<span><i class="fas fa-angle-down"></span></i></th>
-                    <th data-value = "TirC" scope="col">Tir/c<span><i class="fas fa-angle-down"></span></i></th>
-                    <th data-value = "duel" scope="col">D/g<span><i class="fas fa-angle-down"></span></i></th>
-                    <th data-value = "int"scope="col">Int<span><i class="fas fa-angle-down"></span></i></th>
-                    <th data-value = "hdm" scope="col">Hdm<span><i class="fas fa-angle-down"></span></i></th>
-                    <th data-value = "notemoy" scope="col">Notes<span><i class="fas fa-angle-down"></span></i></th>
-                  </tr>
-                </thead>
-
-                <tbody id="list">
-                </tbody>
-             </table>
+      <div class="col-md-2 menu">
+          <div class="logo">
+              <img src="img/logo.svg " alt="">
           </div>
-        </div>
-        <div class="col-md-3">
-          <div class="profil">
-              <div class="bg-cover"></div>
-              <img class="profilPhoto" src="img/profil/mandanda.jpg" alt="">
-              <div class="profil-titre">
-                <h5 id="nomJ">Steve Mandanda</h5>
-              </div>
-              <div class="profil-position">
-                <h6 id="position">Goalkeeper</h6>
-                <h7>note moyenne <span id="noteStyle"></span></h7>
-                
-              </div>
-              <canvas id="myChart" width="300" height="270"></canvas>
-          </div>    
-        </div>
+          <ul class="menu-list">
+            <li data-pos ="Goalkeeper"class="nav-links">GARDIENS</li>
+            <li data-pos="Defender" class="nav-links">DEFENSEURS</li>
+            <li data-pos="Midfielder" class="nav-links">MILIEUX</li>
+            <li data-pos="Attacker"class="nav-links" >ATTAQUANTS</li>
+            <li data-pos ="all" class="nav-links activ" >TOUS</li>  
+          </ul>
+      </div>
+      <div class="col-md-7 tablo">
+        <table id="tab" class="table">
+          <thead class="thead">
+            <tr>
+              <th scope="col" data-value = "shirtNumber" >Num<i class="fas fa-angle-down"></i></th>
+              <th scope="col" data-value = "name">Noms<i class="fas fa-angle-down"></i></th>
+              <th scope="col"class ="activStat" data-value = "position">Positions<i class="fas fa-angle-down"></i></th>
+              <th scope="col" data-value = "matchs" >Mj<i class="fas fa-angle-down"></i></th>
+              <th scope="col" data-value = "buts" >But<i class="fas fa-angle-down"></i></th>  
+              <th scope="col" data-value = "decis" >Déc<i class="fas fa-angle-down"></i></th>
+              <th scope="col" data-value = "TirC" >Tir/c<i class="fas fa-angle-down"></i></th>
+              <th scope="col" data-value = "duel" >D/g<i class="fas fa-angle-down"></i></th>
+              <th scope="col" data-value = "int">Int<i class="fas fa-angle-down"></i></th>
+              <th scope="col" data-value = "hdm">Hdm<span><i class="fas fa-angle-down"></i></th>
+              <th scope="col" data-value = "notemoy" >Notes<i class="fas fa-angle-down"></i></th>
+            </tr>
+          </thead>
+          <tbody id="list"></tbody>
+        </table>
+      </div>
+      <div class="col-md-3 hidden">
+        <div class="profil">
+          <div class="bg-cover"></div>
+          <img class="profilPhoto" src="img/profil/mandanda.jpg" alt="">
+          <div class="profil-titre">
+            <h5 id="nomJ">Steve Mandanda</h5>
+          </div>
+          <div class="profil-position">
+            <h6 id="position">Goalkeeper</h6>
+            <h7>note moyenne <span id="noteStyle"></span></h7>
+          </div>
+          <canvas id="myChart" width="300" height="270"></canvas>
+        </div>    
+      </div>
     </div>
   </div>
 
