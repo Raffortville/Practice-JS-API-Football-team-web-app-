@@ -1,3 +1,4 @@
+
 let table = { sortKey: "position", playerPosActiv: "all"};
 let statPlay = [];
 let joueurs = [];
@@ -5,9 +6,8 @@ let joueursByPos = [];
 let descending = true;
 
 const list = document.getElementById('list');
-const boutons = document.querySelectorAll('tr th');
 const boutonsPos = document.querySelectorAll('[data-pos]');
-const listTab = document.querySelectorAll('tr th');
+const boutonsStat = document.querySelectorAll('tr th');
 const colStat = document.querySelector(".hidden");
 
 const url = "https://api.football-data.org/v2/teams/516/";
@@ -15,6 +15,8 @@ const options = {
   method: "GET",
   headers: { "X-Auth-Token": "4e1bcfc7c6a14469ab579521b2b6c912"}
 };
+
+
 
 ////*************************************   APPEL FETCH API FOOTBALL ****************************/
 
@@ -75,7 +77,6 @@ const displayJoueurs = (array) => {
 }
 
 
-
 const handleEventsPos = () => {
 
   toggleActivClass(boutonsPos,"activ");
@@ -89,7 +90,6 @@ const handleEventsPos = () => {
       filterByPos(joueurs);
     })
   })
-
 }
 
 const toggleActivClass = (nodeElmt,classStyle) => {
@@ -105,10 +105,9 @@ const toggleActivClass = (nodeElmt,classStyle) => {
   })
 }
 
-
 const handleEventsSort = () => {
 
-  boutons.forEach(bout=> { 
+  boutonsStat.forEach(bout=> { 
     
     bout.addEventListener('click',() => { 
 
@@ -136,13 +135,14 @@ const filterByPos = (array) => {
 
 
 const sortTable = (array) => {
+ 
+  let arrayDefault = descending ?  [...array].sort((a,b) => a[table.sortKey] > b[table.sortKey] ? -1 : 1) :
+   
+  [...array].sort((a,b) => b[table.sortKey] > a[table.sortKey] ? -1 : 1);
 
-  let arrayDefault =  descending ? [...array].sort((a,b) => a[table.sortKey] > b[table.sortKey]) : [...array].sort((a,b) => a[table.sortKey] < b[table.sortKey])
-    
   descending ?  descending = false : descending = true;
 
   displayJoueurs(arrayDefault)
-  
 }
   
 function Statitistks(nom,matchs,buts,decis,TirC,duel,int,hdm,note,num,photo){
@@ -287,9 +287,9 @@ const myChart = new Chart(ctx, {
 
 (function animationIcon(){ 
 
-  toggleActivClass(listTab,'activStat')
+  toggleActivClass(boutonsStat,'activStat')
   
-  listTab.forEach(lis=> { 
+  boutonsStat.forEach(lis=> { 
 
     lis.addEventListener('mouseover', () => lis.firstElementChild.classList.add('rotate'));
 
@@ -305,5 +305,5 @@ const init = () => {
   fetchApi();
   handleEventsPos();
   handleEventsSort();
-
 }
+
